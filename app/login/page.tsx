@@ -38,6 +38,10 @@ export default function Login() {
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
               style={{ width: "100%", background: "#0C0E1A", border: "1px solid #1E2235", color: "#E8EAF0", padding: "12px 16px", fontSize: "14px", outline: "none", boxSizing: "border-box" }} />
           </div>
+          <div style={{ textAlign:"right", marginTop:6, marginBottom:16 }}>
+            <a href="/forgot-password" style={{ fontSize:12, color:"#3B82F6", textDecoration:"none" }}>Forgot password?</a>
+          </div>
+
           <button type="submit" disabled={loading}
             style={{ width: "100%", background: "#00E5FF", color: "#050810", padding: "14px", fontWeight: 900, fontSize: "14px", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
             {loading ? "SIGNING IN..." : "SIGN IN"}
