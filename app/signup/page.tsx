@@ -9,10 +9,12 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault(); setLoading(true); setError("");
+    e.preventDefault(); if (!agreedToTerms) { setError("You must agree to the Terms of Service and Privacy Policy to continue."); return; }
+    setLoading(true); setError("");
     const sr = await fetch("/api/auth/signup", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, name })
@@ -50,6 +52,23 @@ export default function Signup() {
             <label style={{ fontSize: "11px", letterSpacing: "2px", color: "#6B7280", display: "block", marginBottom: "6px" }}>PASSWORD</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
               style={{ width: "100%", background: "#0C0E1A", border: "1px solid #1E2235", color: "#E8EAF0", padding: "12px 16px", fontSize: "14px", outline: "none", boxSizing: "border-box" }} />
+          </div>
+                    {/* ToS Agreement */}
+          <div style={{ display:"flex", alignItems:"flex-start", gap:12, marginBottom:20 }}>
+            <input
+              type="checkbox"
+              id="tos-agree"
+              checked={agreedToTerms}
+              onChange={e => setAgreedToTerms(e.target.checked)}
+              style={{ marginTop:2, width:16, height:16, cursor:"pointer", accentColor:"#3B82F6", flexShrink:0 }}
+            />
+            <label htmlFor="tos-agree" style={{ fontSize:13, color:"#8FA3C0", lineHeight:1.6, cursor:"pointer" }}>
+              I agree to the{" "}
+              <a href="/tos" target="_blank" rel="noopener noreferrer" style={{ color:"#3B82F6", textDecoration:"none", fontWeight:600 }}>Terms of Service</a>{" "}
+              and{" "}
+              <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color:"#3B82F6", textDecoration:"none", fontWeight:600 }}>Privacy Policy</a>.
+              By creating an account I confirm I am 18 or older.
+            </label>
           </div>
           <button type="submit" disabled={loading}
             style={{ width: "100%", background: "#00E5FF", color: "#050810", padding: "14px", fontWeight: 900, fontSize: "14px", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
